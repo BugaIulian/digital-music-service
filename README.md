@@ -3,7 +3,7 @@ The Digital Music Service is a web application built using the Spring framework 
 Features
 * User Registration and Authentication: Users can create accounts, log in, and manage their profiles.
 * Artist Registration and Authentication: Artists can create accounts, log in, and manage their profiles.
-* Midjourney API for artists that a single/album cover generated easily with a prompt.
+* Midjourney API for artists where a single/album cover can be generated easily with a prompt.
 * Song and Album Search: Users can search for songs and albums based on various criteria, such as title, artist, or genre.
 * Playlists: Users can create and manage personalized playlists and add songs.
 * Recommendations: The application provides personalized song recommendations based on users' listening history and preferences.
