@@ -1,4 +1,4 @@
-The Digital Music Service is a web application built using the Spring framework and Hibernate. It provides a platform for users to access and explore a vast catalog of songs, albums, and artists. The application integrates with external services such as SendGrid and Twilio for email notifications and SMS alerts when users purchase subscriptions. Additionally, it leverages the Spotify API to gather metadata and information about each song and album.
+The Digital Music Service is a web application built using the Spring framework and Hibernate. It provides a platform for users to access and explore a vast catalog of songs, albums, and artists. The application integrates with external services such as SendGrid and Twilio for email notifications and SMS alerts when users purchase subscriptions, Midjourney for single/album covers. Additionally, it leverages the Spotify API to gather metadata and information about each song and album.
 
 Features
 * User Registration and Authentication: Users can create accounts, log in, and manage their profiles.
