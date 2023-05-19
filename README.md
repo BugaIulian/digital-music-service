@@ -19,6 +19,7 @@ Technologies Used
 * Spotify API: Accesses a vast music catalog, gathering metadata and information about songs and albums.
 * SendGrid: Sends transactional emails for user notifications and account management.
 * Twilio: Enables SMS alerts and notifications for subscription-related events.
+* Midjourney generative images for artists, album/single cover creation.
 
 Getting Started
 1. Clone the repository.
