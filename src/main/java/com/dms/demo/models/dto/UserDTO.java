@@ -24,7 +24,6 @@ public class UserDTO implements Serializable {
     @Email
     private String userEmail;
 
-    @NotBlank
     @Past(message = "DOB should be in the past")
     private LocalDate userBirthDate;
 

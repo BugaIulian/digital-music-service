@@ -20,6 +20,7 @@ Technologies Used
 * SendGrid: Sends transactional emails for user notifications and account management.
 * Twilio: Enables SMS alerts and notifications for subscription-related events.
 * Midjourney generative images for artists, album/single cover creation.
+* ULIDs (Universally Unique Lexicographically Sortable Identifiers) for generating unique and sortable identifiers for various entities and records within the system.
 
 Getting Started
 1. Clone the repository.
