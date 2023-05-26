@@ -22,7 +22,7 @@ public class UserDTO implements Serializable {
 
     @NotBlank
     @Email
-    private String userEmail;
+    private String email;
 
     @Past(message = "DOB should be in the past")
     private LocalDate userBirthDate;
