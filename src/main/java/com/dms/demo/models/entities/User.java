@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -24,23 +25,26 @@ public class User {
     private String userSecondName;
 
     @Column(name = "user_email", unique = true)
-    private String userEmail;
+    private String email;
 
     @Column(name = "dob")
-    private LocalDate userDateOfBirth;
+    private LocalDate userBirthDate;
 
     @Column(name = "interests")
     private String userInterests;
 
+    @CollectionTable(name = "user_passwords", joinColumns = @JoinColumn(name = "user_id"))
+    private String password;
+
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name ="user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    private Set<UserRole> roles;
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    private Set<UserRole> roles = new HashSet<>();
 
     @Column(name = "account_creation_date")
     private LocalDate userAccountCreationDate;
 
-    public User(String id) {
+    public User() {
         this.id = new ULID().nextULID();
         this.roles.add(UserRole.ROLE_USER);
     }
