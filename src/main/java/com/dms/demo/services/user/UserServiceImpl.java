@@ -5,6 +5,7 @@ import com.dms.demo.models.dto.UserDTO;
 import com.dms.demo.models.dto.auth.RegisterRequestDTO;
 import com.dms.demo.models.entities.User;
 import com.dms.demo.repositories.UserRepository;
+import com.dms.demo.services.utils.StringUtilsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,14 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserServiceValidations userServiceValidations;
 
-    public UserServiceImpl(UserRepository userRepository, ObjectMapper objectMapper, BCryptPasswordEncoder bCryptPasswordEncoder, UserServiceValidations userServiceValidations) {
+    private final StringUtilsService stringUtilsService;
+
+    public UserServiceImpl(UserRepository userRepository, ObjectMapper objectMapper, BCryptPasswordEncoder bCryptPasswordEncoder, UserServiceValidations userServiceValidations, StringUtilsService stringUtilsService) {
         this.userRepository = userRepository;
         this.objectMapper = objectMapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userServiceValidations = userServiceValidations;
+        this.stringUtilsService = stringUtilsService;
     }
 
     @Override
@@ -51,8 +55,9 @@ public class UserServiceImpl implements UserService {
     private void updateUserDetails(User updatedUser, UserDTO userDTO) {
         updatedUser.setUserInterests(userDTO.getUserInterests());
         updatedUser.setUserBirthDate(userDTO.getUserBirthDate());
-        updatedUser.setUserFirstName(userDTO.getUserFirstName());
-        updatedUser.setUserSecondName(userDTO.getUserSecondName());
+        updatedUser.setUserAge(LocalDate.now().getYear() - userDTO.getUserBirthDate().getYear());
+        updatedUser.setUserFirstName(stringUtilsService.capitalizeNameAndRemoveWhiteSpaces(userDTO.getUserFirstName()));
+        updatedUser.setUserSecondName(stringUtilsService.capitalizeNameAndRemoveWhiteSpaces(userDTO.getUserSecondName()));
         updatedUser.setEmail(userDTO.getEmail());
     }
 }
