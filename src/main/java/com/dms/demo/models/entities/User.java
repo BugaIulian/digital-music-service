@@ -15,7 +15,7 @@ import java.util.Set;
 public class User {
 
     @Id
-    @Column(name = "user_id", length = 26)
+    @Column(name = "id", length = 26)
     private String id;
 
     @Column(name = "first_name")
@@ -30,6 +30,9 @@ public class User {
     @Column(name = "dob")
     private LocalDate userBirthDate;
 
+    @Column(name = "age")
+    private int userAge;
+
     @Column(name = "interests")
     private String userInterests;
 
@@ -38,7 +41,7 @@ public class User {
 
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "id"))
     private Set<UserRole> roles = new HashSet<>();
 
     @Column(name = "account_creation_date")
