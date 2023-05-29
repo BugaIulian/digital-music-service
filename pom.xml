@@ -83,6 +83,11 @@
 			<artifactId>spring-security-web</artifactId>
 			<version>6.1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>de.sonallux.spotify</groupId>
+			<artifactId>spotify-web-api-java</artifactId>
+			<version>3.1.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
