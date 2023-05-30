@@ -1,4 +1,4 @@
-package com.dms.demo.models.dto.auth;
+package com.dms.demo.models.dto.auth.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -7,15 +7,11 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class RegisterRequestDTO implements Serializable {
+public class UserLoginRequestDTO implements Serializable {
 
     @Email
-    @NotBlank
     private String email;
 
     @NotBlank
     private String password;
-
-    @NotBlank
-    private String userFirstName;
 }

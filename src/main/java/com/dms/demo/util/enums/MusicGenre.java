@@ -1,6 +1,6 @@
 package com.dms.demo.util.enums;
 
-public enum SongGenre {
+public enum MusicGenre {
     POP,
     ROCK,
     COUNTRY,

@@ -18,6 +18,9 @@ public class Artist {
     @Column(name = "id", length = 26)
     private String id;
 
+    @Column(name = "email", unique = true)
+    private String email;
+
     @Column(name = "first_name")
     private String firstName;
 

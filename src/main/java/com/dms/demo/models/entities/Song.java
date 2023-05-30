@@ -1,6 +1,6 @@
 package com.dms.demo.models.entities;
 
-import com.dms.demo.util.enums.SongGenre;
+import com.dms.demo.util.enums.MusicGenre;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,7 +19,7 @@ public class Song {
     private String songTitle;
 
     @Column(name = "song_genre")
-    private SongGenre songGenre;
+    private MusicGenre musicGenre;
 
     @Column
     private int duration;

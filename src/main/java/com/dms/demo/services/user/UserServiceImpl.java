@@ -2,7 +2,8 @@ package com.dms.demo.services.user;
 
 import com.dms.demo.exceptions.user.UserNotFoundException;
 import com.dms.demo.models.dto.UserDTO;
-import com.dms.demo.models.dto.auth.RegisterRequestDTO;
+import com.dms.demo.models.dto.auth.user.UserLoginRequestDTO;
+import com.dms.demo.models.dto.auth.user.UserRegisterRequestDTO;
 import com.dms.demo.models.entities.User;
 import com.dms.demo.repositories.UserRepository;
 import com.dms.demo.services.email.EmailService;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -34,17 +36,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public RegisterRequestDTO registerUser(RegisterRequestDTO registerRequestDTO) {
-        userServiceValidations.validateUserNotAlreadyRegistered(registerRequestDTO);
-        User user = objectMapper.convertValue(registerRequestDTO, User.class);
+    public UserRegisterRequestDTO registerUser(UserRegisterRequestDTO userRegisterRequestDTO) {
+        userServiceValidations.validateUserNotAlreadyRegistered(userRegisterRequestDTO);
+        User user = objectMapper.convertValue(userRegisterRequestDTO, User.class);
         user.setUserAccountCreationDate(LocalDate.now());
-        user.setEmail(registerRequestDTO.getEmail());
-        String encryptedPassword = bCryptPasswordEncoder.encode(registerRequestDTO.getPassword());
+        user.setEmail(userRegisterRequestDTO.getEmail());
+        String encryptedPassword = bCryptPasswordEncoder.encode(userRegisterRequestDTO.getPassword());
         user.setPassword(encryptedPassword);
-        user.setUserFirstName(stringUtilsService.capitalizeNameAndRemoveWhiteSpaces(registerRequestDTO.getUserFirstName()));
+        user.setUserFirstName(stringUtilsService.capitalizeNameAndRemoveWhiteSpaces(userRegisterRequestDTO.getUserFirstName()));
         userRepository.save(user);
-        emailService.sendRegistrationEmail(registerRequestDTO.getEmail(), registerRequestDTO.getUserFirstName());
-        return objectMapper.convertValue(user, RegisterRequestDTO.class);
+        emailService.sendRegistrationEmail(userRegisterRequestDTO.getEmail(), userRegisterRequestDTO.getUserFirstName());
+        return objectMapper.convertValue(user, UserRegisterRequestDTO.class);
+    }
+
+    @Override
+    public UserLoginRequestDTO userLogin(UserLoginRequestDTO userLoginRequestDTO) {
+        return null;
     }
 
     @Override
@@ -54,6 +61,17 @@ public class UserServiceImpl implements UserService {
         updateUserDetails(updatedUser, userDTO);
         userRepository.save(updatedUser);
         return objectMapper.convertValue(updatedUser, UserDTO.class);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUserById(String id) {
+        // TODO
+    }
+
+    @Override
+    public List<UserDTO> getUsers() {
+        return null;
     }
 
     private void updateUserDetails(User updatedUser, UserDTO userDTO) {
