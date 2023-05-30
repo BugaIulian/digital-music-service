@@ -5,6 +5,7 @@ import com.dms.demo.models.dto.UserDTO;
 import com.dms.demo.models.dto.auth.RegisterRequestDTO;
 import com.dms.demo.models.entities.User;
 import com.dms.demo.repositories.UserRepository;
+import com.dms.demo.services.email.EmailService;
 import com.dms.demo.services.utils.StringUtilsService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,15 +20,16 @@ public class UserServiceImpl implements UserService {
     private final ObjectMapper objectMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserServiceValidations userServiceValidations;
-
     private final StringUtilsService stringUtilsService;
+    private final EmailService emailService;
 
-    public UserServiceImpl(UserRepository userRepository, ObjectMapper objectMapper, BCryptPasswordEncoder bCryptPasswordEncoder, UserServiceValidations userServiceValidations, StringUtilsService stringUtilsService) {
+    public UserServiceImpl(UserRepository userRepository, ObjectMapper objectMapper, BCryptPasswordEncoder bCryptPasswordEncoder, UserServiceValidations userServiceValidations, StringUtilsService stringUtilsService, EmailService emailService) {
         this.userRepository = userRepository;
         this.objectMapper = objectMapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userServiceValidations = userServiceValidations;
         this.stringUtilsService = stringUtilsService;
+        this.emailService = emailService;
     }
 
     @Override
@@ -39,7 +41,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail(registerRequestDTO.getEmail());
         String encryptedPassword = bCryptPasswordEncoder.encode(registerRequestDTO.getPassword());
         user.setPassword(encryptedPassword);
+        user.setUserFirstName(stringUtilsService.capitalizeNameAndRemoveWhiteSpaces(registerRequestDTO.getUserFirstName()));
         userRepository.save(user);
+        emailService.sendRegistrationEmail(registerRequestDTO.getEmail(), registerRequestDTO.getUserFirstName());
         return objectMapper.convertValue(user, RegisterRequestDTO.class);
     }
 

@@ -1,10 +1,9 @@
 package com.dms.demo.services.user;
 
-import com.dms.demo.exceptions.user.UserNotFoundException;
+import com.dms.demo.exceptions.user.UserAlreadyExistsException;
 import com.dms.demo.models.dto.auth.RegisterRequestDTO;
 import com.dms.demo.models.entities.User;
 import com.dms.demo.repositories.UserRepository;
-import jakarta.validation.ValidationException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,10 +15,10 @@ public class UserServiceValidations {
         this.userRepository = userRepository;
     }
 
-    public void validateUserNotAlreadyRegistered(RegisterRequestDTO user) throws ValidationException {
+    public void validateUserNotAlreadyRegistered(RegisterRequestDTO user) throws UserAlreadyExistsException {
         User existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser != null) {
-            throw new ValidationException("User with the same email is already registered.");
+            throw new UserAlreadyExistsException("User with the same email is already registered.");
         }
     }
 }
