@@ -1,5 +1,6 @@
 package com.dms.demo.exceptions;
 
+import com.dms.demo.exceptions.user.UserAlreadyExistsException;
 import com.dms.demo.exceptions.user.UserNotFoundException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +27,11 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> userNotFoundException(UserNotFoundException userNotFoundException) {
         return getExceptionResponse(userNotFoundException, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<Object> userAlreadyExistsException(UserAlreadyExistsException userAlreadyExistsException) {
+        return getExceptionResponse(userAlreadyExistsException, HttpStatus.CONFLICT);
     }
 
     private ResponseEntity<Object> getExceptionResponse(RuntimeException runtimeException, HttpStatus httpStatus) {

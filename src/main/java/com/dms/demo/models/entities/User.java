@@ -36,7 +36,7 @@ public class User {
     @Column(name = "interests")
     private String userInterests;
 
-    @CollectionTable(name = "user_passwords", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "password")
     private String password;
 
     @ElementCollection
