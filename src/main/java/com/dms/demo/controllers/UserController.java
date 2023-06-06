@@ -7,10 +7,14 @@ import com.dms.demo.services.user.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
+@Validated
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -19,29 +23,31 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/users/register")
+    @PostMapping("/register")
     public ResponseEntity<UserRegisterRequestDTO> registerNewUser(@RequestBody @Valid UserRegisterRequestDTO userRegisterRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.registerUser(userRegisterRequestDTO));
     }
 
-    @PostMapping("/users/login")
+    @PostMapping("/login")
     public ResponseEntity<UserLoginRequestDTO> userLogin(@RequestBody @Valid UserLoginRequestDTO userLoginRequestDTO) {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.userLogin(userLoginRequestDTO));
     }
 
-    @PutMapping("users/update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<UserDTO> updateUserProfile(@PathVariable String id, @RequestBody @Valid UserDTO userDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.updateUserProfile(id, userDTO));
     }
 
-    @DeleteMapping("users/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable String id) {
         userService.deleteUserById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("users")
-    public ResponseEntity<List<UserDTO>> getAllUsers() {
-        return ResponseEntity.ok(userService.getUsers());
+    @GetMapping
+    public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(value = "firstname", required = false) String firstName,
+                                                  @RequestParam(value = "gender", required = false) String gender,
+                                                  @RequestParam(value = "city", required = false) String city) {
+        return ResponseEntity.ok(userService.getUsers(firstName, city, gender));
     }
 }

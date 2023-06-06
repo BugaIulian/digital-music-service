@@ -16,5 +16,5 @@ public class UserRegisterRequestDTO implements Serializable {
     private String password;
 
     @NotBlank
-    private String userFirstName;
+    private String firstName;
 }

@@ -14,20 +14,23 @@ public class UserDTO implements Serializable {
 
     @NotBlank
     @Size(min = 2, max = 40, message = "First name must contain between 4 and 40 characters")
-    private String userFirstName;
+    private String firstName;
 
     @NotBlank
     @Size(min = 2, max = 40, message = "Second name must contain between 4 and 40 characters")
-    private String userSecondName;
+    private String secondName;
 
     @NotBlank
     @Email
     private String email;
 
     @Past(message = "DOB should be in the past")
-    private LocalDate userBirthDate;
+    private LocalDate dob;
 
     @NotBlank
-    private String userInterests;
+    private String interests;
+
+    @NotBlank
+    private String city;
 
 }

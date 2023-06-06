@@ -3,8 +3,8 @@ package com.dms.demo.services.user;
 import com.dms.demo.models.dto.UserDTO;
 import com.dms.demo.models.dto.auth.user.UserLoginRequestDTO;
 import com.dms.demo.models.dto.auth.user.UserRegisterRequestDTO;
-
 import java.util.List;
+
 
 public interface UserService {
 
@@ -16,6 +16,5 @@ public interface UserService {
 
     void deleteUserById(String id);
 
-    List<UserDTO> getUsers();
-
+    List<UserDTO> getUsers(String firstName, String city, String gender);
 }

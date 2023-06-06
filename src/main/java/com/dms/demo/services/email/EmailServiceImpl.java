@@ -1,5 +1,6 @@
 package com.dms.demo.services.email;
 
+import com.dms.demo.exceptions.email.SendgridRequestException;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.Response;
@@ -41,7 +42,7 @@ public class EmailServiceImpl implements EmailService {
             log.info(response.getBody());
             log.info(response.getHeaders().toString());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new SendgridRequestException("The request to sendgrid has been denied.");
         }
     }
 

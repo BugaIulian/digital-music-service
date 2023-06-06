@@ -3,7 +3,6 @@ package com.dms.demo.models.dto.auth.artist;
 import com.dms.demo.util.enums.MusicGenre;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data

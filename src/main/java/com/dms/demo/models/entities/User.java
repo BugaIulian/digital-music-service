@@ -19,27 +19,30 @@ public class User {
     private String id;
 
     @Column(name = "first_name")
-    private String userFirstName;
+    private String firstName;
 
     @Column(name = "second_name")
-    private String userSecondName;
+    private String secondName;
 
     @Column(name = "user_email", unique = true)
     private String email;
 
     @Column(name = "dob")
-    private LocalDate userBirthDate;
+    private LocalDate dob;
 
     @Column(name = "age")
-    private int userAge;
+    private int age;
 
     @Column(name = "interests")
-    private String userInterests;
+    private String interests;
 
     @Column(name = "password")
     private String password;
 
-    @ElementCollection
+    @Column(name = "city")
+    private String city;
+
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "id"))
     private Set<UserRole> roles = new HashSet<>();
