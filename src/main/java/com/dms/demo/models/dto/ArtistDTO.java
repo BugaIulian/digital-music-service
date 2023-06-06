@@ -11,17 +11,17 @@ import java.time.LocalDate;
 public class ArtistDTO implements Serializable {
 
     @NotBlank
-    private String artistFirstName;
+    private String firstName;
 
     @NotBlank
-    private String artistSecondName;
+    private String secondName;
 
     @Past
-    private LocalDate artistBirthDate;
+    private LocalDate dob;
 
     @NotBlank
-    private String artistHomeTown;
+    private String homeTown;
 
     @NotBlank
-    private long artistFollowers;
+    private long followers;
 }

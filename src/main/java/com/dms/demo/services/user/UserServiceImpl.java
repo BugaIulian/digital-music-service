@@ -14,10 +14,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -43,9 +46,9 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userRegisterRequestDTO.getEmail());
         String encryptedPassword = bCryptPasswordEncoder.encode(userRegisterRequestDTO.getPassword());
         user.setPassword(encryptedPassword);
-        user.setUserFirstName(stringUtilsService.capitalizeNameAndRemoveWhiteSpaces(userRegisterRequestDTO.getUserFirstName()));
+        user.setFirstName(stringUtilsService.capitalizeNameAndRemoveWhiteSpaces(userRegisterRequestDTO.getFirstName()));
         userRepository.save(user);
-        emailService.sendRegistrationEmail(userRegisterRequestDTO.getEmail(), userRegisterRequestDTO.getUserFirstName());
+        emailService.sendRegistrationEmail(userRegisterRequestDTO.getEmail(), userRegisterRequestDTO.getFirstName());
         return objectMapper.convertValue(user, UserRegisterRequestDTO.class);
     }
 
@@ -66,20 +69,38 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteUserById(String id) {
-        // TODO
+        User userToBeErased = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User Not Found"));
+        userRepository.delete(userToBeErased);
     }
 
     @Override
-    public List<UserDTO> getUsers() {
-        return null;
+    public List<UserDTO> getUsers(String firstName, String city, String gender) {
+
+        if (firstName == null && city == null && gender == null) {
+            List<User> userEntities = userRepository.findAll();
+            List<UserDTO> allUsers = new ArrayList<>();
+            userEntities.forEach(userEntity -> allUsers.add(objectMapper.convertValue(userEntity, UserDTO.class)));
+            return allUsers;
+        }
+
+        if (firstName != null) {
+            List<User> sameNameEntities = userRepository.findAllByFirstName(firstName);
+            List<UserDTO> allUsersWithTheSameFirstName = new ArrayList<>();
+            sameNameEntities.forEach(userEntity -> allUsersWithTheSameFirstName.add(objectMapper.convertValue(userEntity, UserDTO.class)));
+            return allUsersWithTheSameFirstName;
+        }
+
+        return Collections.emptyList();
     }
 
+
     private void updateUserDetails(User updatedUser, UserDTO userDTO) {
-        updatedUser.setUserInterests(userDTO.getUserInterests());
-        updatedUser.setUserBirthDate(userDTO.getUserBirthDate());
-        updatedUser.setUserAge(LocalDate.now().getYear() - userDTO.getUserBirthDate().getYear());
-        updatedUser.setUserFirstName(stringUtilsService.capitalizeNameAndRemoveWhiteSpaces(userDTO.getUserFirstName()));
-        updatedUser.setUserSecondName(stringUtilsService.capitalizeNameAndRemoveWhiteSpaces(userDTO.getUserSecondName()));
+        updatedUser.setInterests(userDTO.getInterests());
+        updatedUser.setDob(userDTO.getDob());
+        updatedUser.setAge(LocalDate.now().getYear() - userDTO.getDob().getYear());
+        updatedUser.setFirstName(stringUtilsService.capitalizeNameAndRemoveWhiteSpaces(userDTO.getFirstName()));
+        updatedUser.setSecondName(stringUtilsService.capitalizeNameAndRemoveWhiteSpaces(userDTO.getSecondName()));
         updatedUser.setEmail(userDTO.getEmail());
+        updatedUser.setCity(stringUtilsService.capitalizeNameAndRemoveWhiteSpaces(userDTO.getCity()));
     }
 }
