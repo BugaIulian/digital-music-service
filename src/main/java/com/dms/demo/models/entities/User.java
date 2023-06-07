@@ -1,6 +1,6 @@
 package com.dms.demo.models.entities;
 
-import com.dms.demo.models.datamapping.GenderConverter;
+import com.dms.demo.models.datamapping.gender.GenderConverter;
 import com.dms.demo.util.enums.Gender;
 import com.dms.demo.util.enums.UserRole;
 import de.huxhorn.sulky.ulid.ULID;

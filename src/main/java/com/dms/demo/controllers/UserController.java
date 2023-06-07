@@ -4,6 +4,7 @@ import com.dms.demo.models.dto.UserDTO;
 import com.dms.demo.models.dto.auth.user.UserLoginRequestDTO;
 import com.dms.demo.models.dto.auth.user.UserRegisterRequestDTO;
 import com.dms.demo.services.user.UserService;
+import com.dms.demo.util.enums.Gender;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @Validated
 @RestController
@@ -46,7 +48,7 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> getUsers(@RequestParam(value = "firstname", required = false) String firstName,
-                                                  @RequestParam(value = "gender", required = false) String gender,
+                                                  @RequestParam(value = "gender", required = false) Gender gender,
                                                   @RequestParam(value = "city", required = false) String city) {
         return ResponseEntity.ok(userService.getUsers(firstName, city, gender));
     }
