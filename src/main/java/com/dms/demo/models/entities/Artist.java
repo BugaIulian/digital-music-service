@@ -1,10 +1,10 @@
 package com.dms.demo.models.entities;
 
-import com.dms.demo.util.enums.UserRole;
 import de.huxhorn.sulky.ulid.ULID;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -39,13 +39,14 @@ public class Artist {
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Song> songs;
 
-    @ElementCollection
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "id"))
-    private Set<UserRole> roles = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "artist_roles", joinColumns = @JoinColumn(name = "artist_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> artistRoles = new HashSet<>();
+
+    @Column(name = "account_creation_date")
+    private LocalDate accountCreationDate;
 
     public Artist() {
         this.id = new ULID().nextULID();
-        this.roles.add(UserRole.ROLE_ARTIST);
     }
 }

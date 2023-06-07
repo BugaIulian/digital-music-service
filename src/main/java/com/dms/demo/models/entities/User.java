@@ -2,11 +2,9 @@ package com.dms.demo.models.entities;
 
 import com.dms.demo.models.datamapping.gender.GenderConverter;
 import com.dms.demo.util.enums.Gender;
-import com.dms.demo.util.enums.UserRole;
 import de.huxhorn.sulky.ulid.ULID;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,16 +46,14 @@ public class User {
     @Convert(converter = GenderConverter.class)
     private Gender gender;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "id"))
-    private Set<UserRole> roles = new HashSet<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> userRoles = new HashSet<>();
 
     @Column(name = "account_creation_date")
-    private LocalDate userAccountCreationDate;
+    private LocalDate accountCreationDate;
 
     public User() {
         this.id = new ULID().nextULID();
-        this.roles.add(UserRole.ROLE_USER);
     }
 }
