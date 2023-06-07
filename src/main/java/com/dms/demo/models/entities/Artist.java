@@ -27,8 +27,14 @@ public class Artist {
     @Column(name = "second_name")
     private String secondName;
 
-    @Column(name = "country")
-    private String country;
+    @Column(name = "city")
+    private String city;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "stage_name")
+    private String stageName;
 
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Song> songs;
