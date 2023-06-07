@@ -5,11 +5,14 @@ import com.dms.demo.exceptions.user.UserPasswordException;
 import com.dms.demo.models.dto.UserDTO;
 import com.dms.demo.models.dto.auth.user.UserLoginRequestDTO;
 import com.dms.demo.models.dto.auth.user.UserRegisterRequestDTO;
+import com.dms.demo.models.entities.Role;
 import com.dms.demo.models.entities.User;
 import com.dms.demo.repositories.UserRepository;
 import com.dms.demo.services.email.EmailService;
+import com.dms.demo.services.role.RoleService;
 import com.dms.demo.services.utils.StringUtilsService;
 import com.dms.demo.util.enums.Gender;
+import com.dms.demo.util.enums.UserRoles;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -29,14 +32,16 @@ public class UserServiceImpl implements UserService {
     private final UserServiceValidations userServiceValidations;
     private final StringUtilsService stringUtilsService;
     private final EmailService emailService;
+    private final RoleService roleService;
 
-    public UserServiceImpl(UserRepository userRepository, ObjectMapper objectMapper, BCryptPasswordEncoder bCryptPasswordEncoder, UserServiceValidations userServiceValidations, StringUtilsService stringUtilsService, EmailService emailService) {
+    public UserServiceImpl(UserRepository userRepository, ObjectMapper objectMapper, BCryptPasswordEncoder bCryptPasswordEncoder, UserServiceValidations userServiceValidations, StringUtilsService stringUtilsService, EmailService emailService, RoleService roleService) {
         this.userRepository = userRepository;
         this.objectMapper = objectMapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userServiceValidations = userServiceValidations;
         this.stringUtilsService = stringUtilsService;
         this.emailService = emailService;
+        this.roleService = roleService;
     }
 
     @Override
@@ -51,13 +56,15 @@ public class UserServiceImpl implements UserService {
     }
 
     private void setUserDetails(UserRegisterRequestDTO userRegisterRequestDTO, User user) {
-        user.setUserAccountCreationDate(LocalDate.now());
+        user.setAccountCreationDate(LocalDate.now());
         user.setEmail(userRegisterRequestDTO.getEmail());
         user.setCity(userRegisterRequestDTO.getCity());
         user.setGender(userRegisterRequestDTO.getGender());
         String encryptedPassword = bCryptPasswordEncoder.encode(userRegisterRequestDTO.getPassword());
         user.setPassword(encryptedPassword);
         user.setFirstName(stringUtilsService.capitalizeAndRemoveWhiteSpaces(userRegisterRequestDTO.getFirstName()));
+        Role role = roleService.createRole(UserRoles.ROLE_FREE_USER);
+        user.getUserRoles().add(role);
     }
 
     @Override
