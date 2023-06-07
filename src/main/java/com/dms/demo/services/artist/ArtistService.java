@@ -5,7 +5,7 @@ import com.dms.demo.models.dto.auth.artist.ArtistRegisterRequestDTO;
 
 public interface ArtistService {
 
-    ArtistRegisterRequestDTO artistRegister(ArtistRegisterRequestDTO artistRegisterRequestDTO);
+    ArtistRegisterRequestDTO artistRegisterRequest(ArtistRegisterRequestDTO artistRegisterRequestDTO);
 
     ArtistLoginRequestDTO artistLogin(ArtistLoginRequestDTO artistLoginRequestDTO);
 }

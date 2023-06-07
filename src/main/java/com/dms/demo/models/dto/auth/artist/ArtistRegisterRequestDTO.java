@@ -3,6 +3,7 @@ package com.dms.demo.models.dto.auth.artist;
 import com.dms.demo.util.enums.MusicGenre;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
@@ -20,6 +21,9 @@ public class ArtistRegisterRequestDTO {
     @NotBlank
     private String stageName;
 
-    @NotBlank
+    @NotNull
     private MusicGenre musicGenre;
+
+    @NotBlank
+    private String city;
 }

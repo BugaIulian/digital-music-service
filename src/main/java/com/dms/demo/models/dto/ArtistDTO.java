@@ -1,6 +1,8 @@
 package com.dms.demo.models.dto;
 
+import com.dms.demo.util.enums.MusicGenre;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import lombok.Data;
 
@@ -24,4 +26,7 @@ public class ArtistDTO implements Serializable {
 
     @NotBlank
     private long followers;
+
+    @NotNull
+    private MusicGenre musicGenre;
 }

@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserRegisterRequestDTO registerUser(UserRegisterRequestDTO userRegisterRequestDTO) {
+    public UserRegisterRequestDTO registerUserRequest(UserRegisterRequestDTO userRegisterRequestDTO) {
         userServiceValidations.validateUserNotAlreadyRegistered(userRegisterRequestDTO);
         User user = objectMapper.convertValue(userRegisterRequestDTO, User.class);
         setUserDetails(userRegisterRequestDTO, user);
