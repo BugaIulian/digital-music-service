@@ -1,5 +1,7 @@
 package com.dms.demo.models.entities;
 
+import com.dms.demo.models.datamapping.GenderConverter;
+import com.dms.demo.util.enums.Gender;
 import com.dms.demo.util.enums.UserRole;
 import de.huxhorn.sulky.ulid.ULID;
 import jakarta.persistence.*;
@@ -41,6 +43,10 @@ public class User {
 
     @Column(name = "city")
     private String city;
+
+    @Column(name = "gender")
+    @Convert(converter = GenderConverter.class)
+    private Gender gender;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)

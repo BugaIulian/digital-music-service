@@ -44,9 +44,11 @@ public class UserServiceImpl implements UserService {
         User user = objectMapper.convertValue(userRegisterRequestDTO, User.class);
         user.setUserAccountCreationDate(LocalDate.now());
         user.setEmail(userRegisterRequestDTO.getEmail());
+        user.setCity(userRegisterRequestDTO.getCity());
+        user.setGender(userRegisterRequestDTO.getGender());
         String encryptedPassword = bCryptPasswordEncoder.encode(userRegisterRequestDTO.getPassword());
         user.setPassword(encryptedPassword);
-        user.setFirstName(stringUtilsService.capitalizeNameAndRemoveWhiteSpaces(userRegisterRequestDTO.getFirstName()));
+        user.setFirstName(stringUtilsService.capitalizeAndRemoveWhiteSpaces(userRegisterRequestDTO.getFirstName()));
         userRepository.save(user);
         emailService.sendRegistrationEmail(userRegisterRequestDTO.getEmail(), userRegisterRequestDTO.getFirstName());
         return objectMapper.convertValue(user, UserRegisterRequestDTO.class);
@@ -98,9 +100,9 @@ public class UserServiceImpl implements UserService {
         updatedUser.setInterests(userDTO.getInterests());
         updatedUser.setDob(userDTO.getDob());
         updatedUser.setAge(LocalDate.now().getYear() - userDTO.getDob().getYear());
-        updatedUser.setFirstName(stringUtilsService.capitalizeNameAndRemoveWhiteSpaces(userDTO.getFirstName()));
-        updatedUser.setSecondName(stringUtilsService.capitalizeNameAndRemoveWhiteSpaces(userDTO.getSecondName()));
+        updatedUser.setFirstName(stringUtilsService.capitalizeAndRemoveWhiteSpaces(userDTO.getFirstName()));
+        updatedUser.setSecondName(stringUtilsService.capitalizeAndRemoveWhiteSpaces(userDTO.getSecondName()));
         updatedUser.setEmail(userDTO.getEmail());
-        updatedUser.setCity(stringUtilsService.capitalizeNameAndRemoveWhiteSpaces(userDTO.getCity()));
+        updatedUser.setCity(stringUtilsService.capitalizeAndRemoveWhiteSpaces(userDTO.getCity()));
     }
 }
