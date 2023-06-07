@@ -26,5 +26,5 @@ Getting Started
 1. Clone the repository.
 2. Configure the application properties for database connection, external service credentials, and API keys.
 3. Build and run the application using your preferred IDE.
-4. Access the application in your browser and start exploring the digital music service.
-5. Contributions are welcome.
+4. Contributions are welcome.
+
