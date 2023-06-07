@@ -1,6 +1,7 @@
 package com.dms.demo.services.user;
 
 import com.dms.demo.exceptions.user.UserNotFoundException;
+import com.dms.demo.exceptions.user.UserPasswordException;
 import com.dms.demo.models.dto.UserDTO;
 import com.dms.demo.models.dto.auth.user.UserLoginRequestDTO;
 import com.dms.demo.models.dto.auth.user.UserRegisterRequestDTO;
@@ -61,7 +62,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserLoginRequestDTO userLogin(UserLoginRequestDTO userLoginRequestDTO) {
-        return null;
+        User userLogin = userRepository.findByEmail(userLoginRequestDTO.getEmail());
+        userServiceValidations.validateUserNotFound(userLogin);
+        if (checkUserPassword(userLoginRequestDTO, userLogin) && checkUserEmail(userLoginRequestDTO, userLogin)) {
+            return userLoginRequestDTO;
+        } else {
+            throw new UserPasswordException("Incorrect password, please try again!");
+        }
     }
 
     @Override
@@ -114,7 +121,6 @@ public class UserServiceImpl implements UserService {
         return Collections.emptyList();
     }
 
-
     private void updateUserDetails(User updatedUser, UserDTO userDTO) {
         updatedUser.setInterests(userDTO.getInterests());
         updatedUser.setDob(userDTO.getDob());
@@ -123,5 +129,13 @@ public class UserServiceImpl implements UserService {
         updatedUser.setSecondName(stringUtilsService.capitalizeAndRemoveWhiteSpaces(userDTO.getSecondName()));
         updatedUser.setEmail(userDTO.getEmail());
         updatedUser.setCity(stringUtilsService.capitalizeAndRemoveWhiteSpaces(userDTO.getCity()));
+    }
+
+    private boolean checkUserPassword(UserLoginRequestDTO userLoginRequestDTO, User userLogin) {
+        return new BCryptPasswordEncoder().matches(userLoginRequestDTO.getPassword(), userLogin.getPassword());
+    }
+
+    private boolean checkUserEmail(UserLoginRequestDTO userLoginRequestDTO, User userLogin) {
+        return userLoginRequestDTO.getEmail().equals(userLogin.getEmail());
     }
 }

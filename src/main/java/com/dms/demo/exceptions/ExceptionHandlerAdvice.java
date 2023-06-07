@@ -2,6 +2,7 @@ package com.dms.demo.exceptions;
 
 import com.dms.demo.exceptions.user.UserAlreadyExistsException;
 import com.dms.demo.exceptions.user.UserNotFoundException;
+import com.dms.demo.exceptions.user.UserPasswordException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +29,11 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Object> userNotFoundException(UserNotFoundException userNotFoundException) {
         return getExceptionResponse(userNotFoundException, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserPasswordException.class)
+    public ResponseEntity<Object> userPasswordException(UserPasswordException userPasswordException) {
+        return getExceptionResponse(userPasswordException, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
