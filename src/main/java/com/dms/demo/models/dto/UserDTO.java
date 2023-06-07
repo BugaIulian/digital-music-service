@@ -1,9 +1,7 @@
 package com.dms.demo.models.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Size;
+import com.dms.demo.util.enums.Gender;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -32,5 +30,8 @@ public class UserDTO implements Serializable {
 
     @NotBlank
     private String city;
+
+    @NotNull
+    private Gender gender;
 
 }

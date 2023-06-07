@@ -1,4 +1,4 @@
-package com.dms.demo.models.datamapping;
+package com.dms.demo.models.datamapping.gender;
 
 import com.dms.demo.util.enums.Gender;
 import jakarta.persistence.AttributeConverter;

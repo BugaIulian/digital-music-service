@@ -8,6 +8,7 @@ import com.dms.demo.models.entities.User;
 import com.dms.demo.repositories.UserRepository;
 import com.dms.demo.services.email.EmailService;
 import com.dms.demo.services.utils.StringUtilsService;
+import com.dms.demo.util.enums.Gender;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,13 @@ public class UserServiceImpl implements UserService {
     public UserRegisterRequestDTO registerUser(UserRegisterRequestDTO userRegisterRequestDTO) {
         userServiceValidations.validateUserNotAlreadyRegistered(userRegisterRequestDTO);
         User user = objectMapper.convertValue(userRegisterRequestDTO, User.class);
+        setUserDetails(userRegisterRequestDTO, user);
+        userRepository.save(user);
+        emailService.sendRegistrationEmail(userRegisterRequestDTO.getEmail(), userRegisterRequestDTO.getFirstName());
+        return objectMapper.convertValue(user, UserRegisterRequestDTO.class);
+    }
+
+    private void setUserDetails(UserRegisterRequestDTO userRegisterRequestDTO, User user) {
         user.setUserAccountCreationDate(LocalDate.now());
         user.setEmail(userRegisterRequestDTO.getEmail());
         user.setCity(userRegisterRequestDTO.getCity());
@@ -49,9 +57,6 @@ public class UserServiceImpl implements UserService {
         String encryptedPassword = bCryptPasswordEncoder.encode(userRegisterRequestDTO.getPassword());
         user.setPassword(encryptedPassword);
         user.setFirstName(stringUtilsService.capitalizeAndRemoveWhiteSpaces(userRegisterRequestDTO.getFirstName()));
-        userRepository.save(user);
-        emailService.sendRegistrationEmail(userRegisterRequestDTO.getEmail(), userRegisterRequestDTO.getFirstName());
-        return objectMapper.convertValue(user, UserRegisterRequestDTO.class);
     }
 
     @Override
@@ -76,7 +81,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getUsers(String firstName, String city, String gender) {
+    public List<UserDTO> getUsers(String firstName, String city, Gender gender) {
 
         if (firstName == null && city == null && gender == null) {
             List<User> userEntities = userRepository.findAll();
@@ -86,10 +91,24 @@ public class UserServiceImpl implements UserService {
         }
 
         if (firstName != null) {
-            List<User> sameNameEntities = userRepository.findAllByFirstName(firstName);
+            List<User> sameFirstNameEntities = userRepository.findAllByFirstName(firstName);
             List<UserDTO> allUsersWithTheSameFirstName = new ArrayList<>();
-            sameNameEntities.forEach(userEntity -> allUsersWithTheSameFirstName.add(objectMapper.convertValue(userEntity, UserDTO.class)));
+            sameFirstNameEntities.forEach(userEntity -> allUsersWithTheSameFirstName.add(objectMapper.convertValue(userEntity, UserDTO.class)));
             return allUsersWithTheSameFirstName;
+        }
+
+        if (city != null) {
+            List<User> sameCityEntities = userRepository.findAllByCity(city);
+            List<UserDTO> allUsersWithTheSameCity = new ArrayList<>();
+            sameCityEntities.forEach(userEntity -> allUsersWithTheSameCity.add(objectMapper.convertValue(userEntity, UserDTO.class)));
+            return allUsersWithTheSameCity;
+        }
+
+        if (gender != null) {
+            List<User> sameGenderEntities = userRepository.findAllByGender(gender);
+            List<UserDTO> allUserWithTheSameGender = new ArrayList<>();
+            sameGenderEntities.forEach(userEntity -> allUserWithTheSameGender.add(objectMapper.convertValue(userEntity, UserDTO.class)));
+            return allUserWithTheSameGender;
         }
 
         return Collections.emptyList();
