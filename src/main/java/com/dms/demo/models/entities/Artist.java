@@ -3,7 +3,6 @@ package com.dms.demo.models.entities;
 import de.huxhorn.sulky.ulid.ULID;
 import jakarta.persistence.*;
 import lombok.Data;
-
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
