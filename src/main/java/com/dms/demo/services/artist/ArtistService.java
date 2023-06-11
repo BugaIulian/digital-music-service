@@ -18,4 +18,6 @@ public interface ArtistService {
     void deleteArtistById(String id);
 
     List<ArtistDTO> getArtists(String firstName, String city, Gender gender);
+
+    String createAlbumCover(String prompt);
 }
