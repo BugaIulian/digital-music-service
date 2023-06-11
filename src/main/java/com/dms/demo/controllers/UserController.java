@@ -26,12 +26,12 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserRegisterRequestDTO> registerNewUser(@RequestBody @Valid UserRegisterRequestDTO userRegisterRequestDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.registerUserRequest(userRegisterRequestDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.userRegisterRequest(userRegisterRequestDTO));
     }
 
     @PostMapping("/login")
     public ResponseEntity<UserLoginRequestDTO> userLogin(@RequestBody @Valid UserLoginRequestDTO userLoginRequestDTO) {
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.userLogin(userLoginRequestDTO));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(userService.userLoginRequest(userLoginRequestDTO));
     }
 
     @PutMapping("/update/{id}")

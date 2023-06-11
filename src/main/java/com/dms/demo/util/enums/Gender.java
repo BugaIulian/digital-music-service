@@ -1,5 +1,6 @@
 package com.dms.demo.util.enums;
 
+import com.dms.demo.exceptions.gender.IllegalGenderException;
 import com.dms.demo.models.datamapping.gender.GenderDeserializer;
 import com.dms.demo.models.datamapping.gender.GenderSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -28,6 +29,6 @@ public enum Gender {
                 return gender;
             }
         }
-        throw new IllegalArgumentException("Unknown database value: " + dbValue);
+        throw new IllegalGenderException("Invalid gender. Allowed values are: Male and Female");
     }
 }

@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserRegisterRequestDTO registerUserRequest(UserRegisterRequestDTO userRegisterRequestDTO) {
+    public UserRegisterRequestDTO userRegisterRequest(UserRegisterRequestDTO userRegisterRequestDTO) {
         userServiceValidations.validateUserNotAlreadyRegistered(userRegisterRequestDTO);
         User user = objectMapper.convertValue(userRegisterRequestDTO, User.class);
         setUserDetails(userRegisterRequestDTO, user);
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserLoginRequestDTO userLogin(UserLoginRequestDTO userLoginRequestDTO) {
+    public UserLoginRequestDTO userLoginRequest(UserLoginRequestDTO userLoginRequestDTO) {
         User userLogin = userRepository.findByEmail(userLoginRequestDTO.getEmail());
         userServiceValidations.validateUserNotFound(userLogin);
         if (checkUserPassword(userLoginRequestDTO, userLogin) && checkUserEmail(userLoginRequestDTO, userLogin)) {

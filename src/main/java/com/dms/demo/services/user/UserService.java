@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface UserService {
 
-    UserRegisterRequestDTO registerUserRequest(UserRegisterRequestDTO userRegisterRequestDTO);
+    UserRegisterRequestDTO userRegisterRequest(UserRegisterRequestDTO userRegisterRequestDTO);
 
-    UserLoginRequestDTO userLogin(UserLoginRequestDTO userLoginRequestDTO);
+    UserLoginRequestDTO userLoginRequest(UserLoginRequestDTO userLoginRequestDTO);
 
     UserDTO updateUserProfile(String id, UserDTO userDTO);
 

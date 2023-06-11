@@ -36,6 +36,9 @@ public class Artist {
     @Column(name = "stage_name")
     private String stageName;
 
+    @Column(name = "music_genre")
+    private String musicGenre;
+
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Song> songs;
 
