@@ -46,6 +46,11 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    @Override
+    public void sendArtistsSuggestionsBasedOnPreferredArtists(String userEmail, String userName) {
+
+    }
+
     private Mail setEmailToAndFrom(String registeredEmail, String userName) {
         Email from = new Email(fromEmail);
         Email to = new Email(registeredEmail);
