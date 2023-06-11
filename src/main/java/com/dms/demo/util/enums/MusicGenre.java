@@ -1,5 +1,13 @@
 package com.dms.demo.util.enums;
 
+import com.dms.demo.exceptions.musicgenre.IllegalMusicGenreException;
+import com.dms.demo.models.datamapping.genre.GenreDeserializer;
+import com.dms.demo.models.datamapping.genre.GenreSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+@JsonDeserialize(using = GenreDeserializer.class)
+@JsonSerialize(using = GenreSerializer.class)
 public enum MusicGenre {
 
     POP("Pop"),
@@ -8,7 +16,7 @@ public enum MusicGenre {
     RAP("Rap"),
     JAZZ("Jazz"),
     CLASSICAL("Classical"),
-    BLUES("Blue"),
+    BLUES("Blues"),
     ELECTRONIC("Electronic"),
     REGGAE("Reggae"),
     METAL("Metal");
@@ -29,6 +37,6 @@ public enum MusicGenre {
                 return musicGenre;
             }
         }
-        throw new IllegalArgumentException("Unknown database value: " + dbValue);
+        throw new IllegalMusicGenreException("Invalid genre. Allowed values are: Pop, Rock, Country, Rap, Jazz, Classical, Blues, Electronic, Reggae, Metal");
     }
 }

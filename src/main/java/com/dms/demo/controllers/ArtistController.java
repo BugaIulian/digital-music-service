@@ -1,5 +1,6 @@
 package com.dms.demo.controllers;
 
+import com.dms.demo.models.dto.auth.artist.ArtistLoginRequestDTO;
 import com.dms.demo.models.dto.auth.artist.ArtistRegisterRequestDTO;
 import com.dms.demo.services.artist.ArtistService;
 import jakarta.validation.Valid;
@@ -23,5 +24,10 @@ public class ArtistController {
     @PostMapping("/register")
     public ResponseEntity<ArtistRegisterRequestDTO> registerNewArtist(@RequestBody @Valid ArtistRegisterRequestDTO artistRegisterRequestDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(artistService.artistRegisterRequest(artistRegisterRequestDTO));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<ArtistLoginRequestDTO> artistLogin(@RequestBody @Valid ArtistLoginRequestDTO artistLoginRequestDTO) {
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(artistService.artistLoginRequest(artistLoginRequestDTO));
     }
 }

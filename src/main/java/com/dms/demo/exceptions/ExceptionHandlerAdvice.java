@@ -1,5 +1,9 @@
 package com.dms.demo.exceptions;
 
+import com.dms.demo.exceptions.artist.ArtistAlreadyExistsException;
+import com.dms.demo.exceptions.artist.ArtistNotFoundException;
+import com.dms.demo.exceptions.gender.IllegalGenderException;
+import com.dms.demo.exceptions.musicgenre.IllegalMusicGenreException;
 import com.dms.demo.exceptions.user.UserAlreadyExistsException;
 import com.dms.demo.exceptions.user.UserNotFoundException;
 import com.dms.demo.exceptions.user.UserPasswordException;
@@ -39,6 +43,26 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<Object> userAlreadyExistsException(UserAlreadyExistsException userAlreadyExistsException) {
         return getExceptionResponse(userAlreadyExistsException, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(ArtistNotFoundException.class)
+    public ResponseEntity<Object> artistNotFoundException(ArtistNotFoundException artistNotFoundException) {
+        return getExceptionResponse(artistNotFoundException, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ArtistAlreadyExistsException.class)
+    public ResponseEntity<Object> artistAlreadyExistsException(ArtistAlreadyExistsException artistAlreadyExistsException) {
+        return getExceptionResponse(artistAlreadyExistsException, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(IllegalMusicGenreException.class)
+    public ResponseEntity<Object> illegalMusicGenreException(IllegalMusicGenreException illegalMusicGenreException) {
+        return getExceptionResponse(illegalMusicGenreException, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalGenderException.class)
+    public ResponseEntity<Object> illegalGenderException(IllegalGenderException illegalGenderException) {
+        return getExceptionResponse(illegalGenderException, HttpStatus.BAD_REQUEST);
     }
 
     private ResponseEntity<Object> getExceptionResponse(RuntimeException runtimeException, HttpStatus httpStatus) {
