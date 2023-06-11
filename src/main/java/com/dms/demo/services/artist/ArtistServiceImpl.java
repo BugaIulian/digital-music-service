@@ -7,6 +7,7 @@ import com.dms.demo.models.dto.auth.artist.ArtistRegisterRequestDTO;
 import com.dms.demo.models.entities.Artist;
 import com.dms.demo.models.entities.Role;
 import com.dms.demo.repositories.ArtistRepository;
+import com.dms.demo.services.dalle.DalleService;
 import com.dms.demo.services.role.RoleService;
 import com.dms.demo.services.utils.StringUtilsService;
 import com.dms.demo.util.enums.Gender;
@@ -26,16 +27,17 @@ public class ArtistServiceImpl implements ArtistService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final StringUtilsService stringUtilsService;
     private final RoleService roleService;
-
     private final ArtistServiceValidations artistServiceValidations;
+    private final DalleService dalleService;
 
-    public ArtistServiceImpl(ArtistRepository artistRepository, ObjectMapper objectMapper, BCryptPasswordEncoder bCryptPasswordEncoder, StringUtilsService stringUtilsService, RoleService roleService, ArtistServiceValidations artistServiceValidations) {
+    public ArtistServiceImpl(ArtistRepository artistRepository, ObjectMapper objectMapper, BCryptPasswordEncoder bCryptPasswordEncoder, StringUtilsService stringUtilsService, RoleService roleService, ArtistServiceValidations artistServiceValidations, DalleService dalleService) {
         this.artistRepository = artistRepository;
         this.objectMapper = objectMapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.stringUtilsService = stringUtilsService;
         this.roleService = roleService;
         this.artistServiceValidations = artistServiceValidations;
+        this.dalleService = dalleService;
     }
 
     @Override
@@ -82,6 +84,11 @@ public class ArtistServiceImpl implements ArtistService {
     @Override
     public List<ArtistDTO> getArtists(String firstName, String city, Gender gender) {
         return null;
+    }
+
+    @Override
+    public String createAlbumCover(String prompt) {
+        return dalleService.createAlbumCover(prompt);
     }
 
     private boolean checkArtistEmail(ArtistLoginRequestDTO artistLoginRequestDTO, Artist artistLogin) {
