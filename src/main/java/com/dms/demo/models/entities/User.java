@@ -2,9 +2,11 @@ package com.dms.demo.models.entities;
 
 import com.dms.demo.models.datamapping.gender.GenderConverter;
 import com.dms.demo.util.enums.Gender;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import de.huxhorn.sulky.ulid.ULID;
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -52,6 +54,11 @@ public class User {
 
     @Column(name = "account_creation_date")
     private LocalDate accountCreationDate;
+
+    @ManyToOne
+    @JoinColumn(name = "subscription_id", referencedColumnName = "id")
+    @JsonBackReference
+    private Subscription subscription;
 
     public User() {
         this.id = new ULID().nextULID();

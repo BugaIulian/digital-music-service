@@ -2,7 +2,7 @@ package com.dms.demo.services.role;
 
 import com.dms.demo.models.entities.Role;
 import com.dms.demo.repositories.RoleRepository;
-import com.dms.demo.util.enums.UserRoles;
+import com.dms.demo.util.enums.RoleType;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,15 +17,27 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role createRole(UserRoles userRoles) {
+    public Role createRole(RoleType roleType) {
         Role role = new Role();
-        role.setUserRoles(userRoles);
+        role.setRoleType(roleType);
         return roleRepository.save(role);
     }
 
     @Override
-    public Optional<Role> getRoleByName(UserRoles userRoles) {
-    //TODO add some useful code here
+    public Optional<Role> getRoleByName(RoleType roleType) {
+        //TODO add some useful code here
         return Optional.empty();
+    }
+
+    @Override
+    public Role getOrCreateRole(RoleType roleType) {
+        Optional<Role> optionalRole = Optional.ofNullable(roleRepository.findByRoleType(roleType));
+        if (optionalRole.isPresent()) {
+            return optionalRole.get();
+        } else {
+            Role newRole = new Role();
+            newRole.setRoleType(roleType);
+            return roleRepository.save(newRole);
+        }
     }
 }
