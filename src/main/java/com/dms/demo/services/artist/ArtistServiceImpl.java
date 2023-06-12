@@ -11,7 +11,7 @@ import com.dms.demo.services.dalle.DalleService;
 import com.dms.demo.services.role.RoleService;
 import com.dms.demo.services.utils.StringUtilsService;
 import com.dms.demo.util.enums.Gender;
-import com.dms.demo.util.enums.UserRoles;
+import com.dms.demo.util.enums.RoleType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -55,7 +55,7 @@ public class ArtistServiceImpl implements ArtistService {
         artistToBeRegistered.setPassword(bCryptPasswordEncoder.encode(artistRegisterRequestDTO.getPassword()));
         artistToBeRegistered.setFirstName(stringUtilsService.capitalizeAndRemoveWhiteSpaces(artistRegisterRequestDTO.getFirstName()));
         artistToBeRegistered.setStageName(artistRegisterRequestDTO.getStageName());
-        Role role = roleService.createRole(UserRoles.ROLE_FREE_ARTIST);
+        Role role = roleService.createRole(RoleType.ROLE_FREE_ARTIST);
         artistToBeRegistered.getArtistRoles().add(role);
         artistToBeRegistered.setAccountCreationDate(LocalDate.now());
     }

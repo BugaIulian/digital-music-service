@@ -6,13 +6,16 @@ import com.dms.demo.models.dto.UserDTO;
 import com.dms.demo.models.dto.auth.user.UserLoginRequestDTO;
 import com.dms.demo.models.dto.auth.user.UserRegisterRequestDTO;
 import com.dms.demo.models.entities.Role;
+import com.dms.demo.models.entities.Subscription;
 import com.dms.demo.models.entities.User;
+import com.dms.demo.repositories.SubscriptionRepository;
 import com.dms.demo.repositories.UserRepository;
 import com.dms.demo.services.email.EmailService;
 import com.dms.demo.services.role.RoleService;
 import com.dms.demo.services.utils.StringUtilsService;
 import com.dms.demo.util.enums.Gender;
-import com.dms.demo.util.enums.UserRoles;
+import com.dms.demo.util.enums.RoleType;
+import com.dms.demo.util.enums.SubscriptionType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -33,8 +36,9 @@ public class UserServiceImpl implements UserService {
     private final StringUtilsService stringUtilsService;
     private final EmailService emailService;
     private final RoleService roleService;
+    private final SubscriptionRepository subscriptionRepository;
 
-    public UserServiceImpl(UserRepository userRepository, ObjectMapper objectMapper, BCryptPasswordEncoder bCryptPasswordEncoder, UserServiceValidations userServiceValidations, StringUtilsService stringUtilsService, EmailService emailService, RoleService roleService) {
+    public UserServiceImpl(UserRepository userRepository, ObjectMapper objectMapper, BCryptPasswordEncoder bCryptPasswordEncoder, UserServiceValidations userServiceValidations, StringUtilsService stringUtilsService, EmailService emailService, RoleService roleService, SubscriptionRepository subscriptionRepository) {
         this.userRepository = userRepository;
         this.objectMapper = objectMapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -42,6 +46,7 @@ public class UserServiceImpl implements UserService {
         this.stringUtilsService = stringUtilsService;
         this.emailService = emailService;
         this.roleService = roleService;
+        this.subscriptionRepository = subscriptionRepository;
     }
 
     @Override
@@ -60,10 +65,19 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userRegisterRequestDTO.getEmail());
         user.setCity(userRegisterRequestDTO.getCity());
         user.setGender(userRegisterRequestDTO.getGender());
+        user.setSecondName(userRegisterRequestDTO.getSecondName());
+        Subscription defaultSubscription = subscriptionRepository.findBySubscriptionType(SubscriptionType.LISTEN_FREE);
+        if (defaultSubscription == null) {
+            defaultSubscription = new Subscription();
+            defaultSubscription.setSubscriptionType(SubscriptionType.LISTEN_FREE);
+            subscriptionRepository.save(defaultSubscription);
+        }
+        user.setSubscription(defaultSubscription);
+        defaultSubscription.getUsers().add(user);
         String encryptedPassword = bCryptPasswordEncoder.encode(userRegisterRequestDTO.getPassword());
         user.setPassword(encryptedPassword);
         user.setFirstName(stringUtilsService.capitalizeAndRemoveWhiteSpaces(userRegisterRequestDTO.getFirstName()));
-        Role role = roleService.createRole(UserRoles.ROLE_FREE_USER);
+        Role role = roleService.createRole(RoleType.ROLE_FREE_USER);
         user.getUserRoles().add(role);
     }
 

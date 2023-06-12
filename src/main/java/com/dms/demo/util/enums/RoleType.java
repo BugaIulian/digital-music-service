@@ -1,6 +1,6 @@
 package com.dms.demo.util.enums;
 
-public enum UserRoles {
+public enum RoleType {
     ROLE_ADMIN,
     ROLE_FREE_USER,
     ROLE_BASIC_USER,

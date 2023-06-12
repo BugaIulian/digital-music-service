@@ -21,6 +21,9 @@ public class UserRegisterRequestDTO implements Serializable {
     private String firstName;
 
     @NotBlank
+    private String secondName;
+
+    @NotBlank
     private String city;
 
     @NotNull
