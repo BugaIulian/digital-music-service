@@ -3,7 +3,7 @@ The Digital Music Service is a web application built using the Spring framework 
 Features
 * User Registration and Authentication: Users can create accounts, log in, and manage their profiles.
 * Artist Registration and Authentication: Artists can create accounts, log in, and manage their profiles.
-* Midjourney API for artists where a single/album cover can be generated easily with a prompt.
+* Open AI API with Dall E model for artists where a single/album cover can be generated easily with a prompt.
 * Song and Album Search: Users can search for songs and albums based on various criteria, such as title, artist, or genre.
 * Playlists: Users can create and manage personalized playlists and add songs.
 * Recommendations: The application provides personalized song recommendations based on users' listening history and preferences.
@@ -18,8 +18,8 @@ Technologies Used
 * Hibernate: Offers Object-Relational Mapping (ORM) capabilities for seamless interaction with the database.
 * Spotify API: Accesses a vast music catalog, gathering metadata and information about songs and albums.
 * SendGrid: Sends transactional emails for user notifications and account management.
-* Twilio: Enables SMS alerts and notifications for subscription-related events.
-* Midjourney generative images for artists, album/single cover creation.
+* Twilio: Enables SMS alerts and notifications for subscription-related events and also password change requests.
+* Dall E generative images for artists, album/single cover creation.
 * ULIDs (Universally Unique Lexicographically Sortable Identifiers) for generating unique and sortable identifiers for various entities and records within the system.
 
 Getting Started
