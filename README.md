@@ -14,11 +14,11 @@ Features
 * User Activity Tracking: The application tracks user activity and provides insights into listening habits and trends. //TBD
 
 Technologies Used
-* Spring Framework:Provides a robust and scalable backend structure for the application.
+* Spring Framework: Provides a robust and scalable backend structure for the application.
 * Hibernate: Offers Object-Relational Mapping (ORM) capabilities for seamless interaction with the database.
 * Spotify API: Accesses a vast music catalog, gathering metadata and information about songs and albums.
 * SendGrid: Sends transactional emails for user notifications and account management.
-* Twilio: Enables SMS alerts and notifications for subscription-related events.
+* Twilio: Enables SMS alerts and notifications for subscription-related events and also password change requests.
 * Dall E generative images for artists, album/single cover creation.
 * ULIDs (Universally Unique Lexicographically Sortable Identifiers) for generating unique and sortable identifiers for various entities and records within the system.
 
