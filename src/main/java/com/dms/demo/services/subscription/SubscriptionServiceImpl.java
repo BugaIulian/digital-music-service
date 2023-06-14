@@ -27,7 +27,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         this.subscriptionRepository = subscriptionRepository;
         this.roleService = roleService;
     }
-//TO DO
+
+    //TO DO
     @Transactional
     @Override
     public String createPlusSubscriptionAndUpdateRolesAndGenerateInvoice(String id) {
@@ -42,7 +43,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
         plusSubscription.getUsers().add(userToBeSubscribed);
         userToBeSubscribed.setSubscription(plusSubscription);
-        subscriptionRepository.save(plusSubscription);
         userRepository.save(userToBeSubscribed);
         return pdfInvoiceService.generateListenPlusInvoicePDF(userToBeSubscribed.getCity(), userToBeSubscribed.getFirstName(), userToBeSubscribed.getSecondName(), "1", 9.99);
     }

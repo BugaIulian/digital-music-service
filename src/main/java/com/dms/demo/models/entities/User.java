@@ -55,7 +55,7 @@ public class User {
     @Column(name = "account_creation_date")
     private LocalDate accountCreationDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "subscription_id", referencedColumnName = "id")
     @JsonBackReference
     private Subscription subscription;
