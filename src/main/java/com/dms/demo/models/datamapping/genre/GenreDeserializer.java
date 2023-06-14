@@ -4,7 +4,6 @@ import com.dms.demo.util.enums.MusicGenre;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-
 import java.io.IOException;
 
 public class GenreDeserializer extends StdDeserializer<MusicGenre> {

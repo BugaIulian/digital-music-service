@@ -4,7 +4,6 @@ import com.dms.demo.models.entities.Role;
 import com.dms.demo.repositories.RoleRepository;
 import com.dms.demo.util.enums.RoleType;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Service

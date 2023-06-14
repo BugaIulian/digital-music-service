@@ -1,5 +1,6 @@
 package com.dms.demo.services.user;
 
+import com.dms.demo.models.dto.ChangePasswordRequestDTO;
 import com.dms.demo.models.dto.UserDTO;
 import com.dms.demo.models.dto.auth.user.UserLoginRequestDTO;
 import com.dms.demo.models.dto.auth.user.UserRegisterRequestDTO;
@@ -19,4 +20,8 @@ public interface UserService {
     void deleteUserById(String id);
 
     List<UserDTO> getUsers(String firstName, String city, Gender gender);
+
+    void requestPasswordChange(String id);
+
+    void confirmPasswordChange(String userId, ChangePasswordRequestDTO changePasswordRequestDTO);
 }

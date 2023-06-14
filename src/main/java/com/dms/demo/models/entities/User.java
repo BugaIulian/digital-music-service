@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -54,6 +55,15 @@ public class User {
 
     @Column(name = "account_creation_date")
     private LocalDate accountCreationDate;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "sms_token")
+    private Integer smsToken;
+
+    @Column(name = "token_expiry_time")
+    private LocalDateTime tokenExpiryTime;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "subscription_id", referencedColumnName = "id")

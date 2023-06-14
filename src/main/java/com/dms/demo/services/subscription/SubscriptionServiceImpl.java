@@ -28,7 +28,6 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         this.roleService = roleService;
     }
 
-    //TO DO
     @Transactional
     @Override
     public String createPlusSubscriptionAndUpdateRolesAndGenerateInvoice(String id) {
