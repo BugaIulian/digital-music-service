@@ -4,6 +4,8 @@ import com.dms.demo.exceptions.artist.ArtistAlreadyExistsException;
 import com.dms.demo.exceptions.artist.ArtistNotFoundException;
 import com.dms.demo.exceptions.gender.IllegalGenderException;
 import com.dms.demo.exceptions.musicgenre.IllegalMusicGenreException;
+import com.dms.demo.exceptions.token.InvalidTokenException;
+import com.dms.demo.exceptions.token.TokenExpiredException;
 import com.dms.demo.exceptions.user.UserAlreadyExistsException;
 import com.dms.demo.exceptions.user.UserNotFoundException;
 import com.dms.demo.exceptions.user.UserPasswordException;
@@ -63,6 +65,16 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(IllegalGenderException.class)
     public ResponseEntity<Object> illegalGenderException(IllegalGenderException illegalGenderException) {
         return getExceptionResponse(illegalGenderException, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<Object> tokenExpiredException(TokenExpiredException tokenExpiredException) {
+        return getExceptionResponse(tokenExpiredException, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<Object> invalidTokenException(InvalidTokenException invalidTokenException) {
+        return getExceptionResponse(invalidTokenException, HttpStatus.UNAUTHORIZED);
     }
 
     private ResponseEntity<Object> getExceptionResponse(RuntimeException runtimeException, HttpStatus httpStatus) {

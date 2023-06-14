@@ -66,7 +66,7 @@ public class PDFInvoiceServiceImpl implements PDFInvoiceService {
                 "}";
 
         HttpEntity<String> request = new HttpEntity<>(body, headers);
-        ResponseEntity<String> response = restTemplate.postForEntity(Constants.PDF_MONKEY_URL, request, String.class);
+        ResponseEntity<String> response = restTemplate.postForEntity(Constants.PDF_MONKEY_DOCUMENT_URL, request, String.class);
         return response.getBody();
     }
 

@@ -1,7 +1,10 @@
 package com.dms.demo.services.user;
 
+import com.dms.demo.exceptions.token.InvalidTokenException;
+import com.dms.demo.exceptions.token.TokenExpiredException;
 import com.dms.demo.exceptions.user.UserNotFoundException;
 import com.dms.demo.exceptions.user.UserPasswordException;
+import com.dms.demo.models.dto.ChangePasswordRequestDTO;
 import com.dms.demo.models.dto.UserDTO;
 import com.dms.demo.models.dto.auth.user.UserLoginRequestDTO;
 import com.dms.demo.models.dto.auth.user.UserRegisterRequestDTO;
@@ -12,6 +15,8 @@ import com.dms.demo.repositories.SubscriptionRepository;
 import com.dms.demo.repositories.UserRepository;
 import com.dms.demo.services.email.EmailService;
 import com.dms.demo.services.role.RoleService;
+import com.dms.demo.services.sms.SmsService;
+import com.dms.demo.services.smstoken.SMSTokenService;
 import com.dms.demo.services.utils.StringUtilsService;
 import com.dms.demo.util.enums.Gender;
 import com.dms.demo.util.enums.RoleType;
@@ -20,7 +25,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,8 +41,10 @@ public class UserServiceImpl implements UserService {
     private final EmailService emailService;
     private final RoleService roleService;
     private final SubscriptionRepository subscriptionRepository;
+    private final SmsService smsService;
+    private final SMSTokenService smsTokenService;
 
-    public UserServiceImpl(UserRepository userRepository, ObjectMapper objectMapper, BCryptPasswordEncoder bCryptPasswordEncoder, UserServiceValidations userServiceValidations, StringUtilsService stringUtilsService, EmailService emailService, RoleService roleService, SubscriptionRepository subscriptionRepository) {
+    public UserServiceImpl(UserRepository userRepository, ObjectMapper objectMapper, BCryptPasswordEncoder bCryptPasswordEncoder, UserServiceValidations userServiceValidations, StringUtilsService stringUtilsService, EmailService emailService, RoleService roleService, SubscriptionRepository subscriptionRepository, SmsService smsService, SMSTokenService smsTokenService) {
         this.userRepository = userRepository;
         this.objectMapper = objectMapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -47,6 +53,8 @@ public class UserServiceImpl implements UserService {
         this.emailService = emailService;
         this.roleService = roleService;
         this.subscriptionRepository = subscriptionRepository;
+        this.smsService = smsService;
+        this.smsTokenService = smsTokenService;
     }
 
     @Override
@@ -103,8 +111,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteUserById(String id) {
-        User userToBeErased = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User Not Found"));
+    public void deleteUserById(String userId) {
+        User userToBeErased = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User Not Found"));
         userRepository.delete(userToBeErased);
     }
 
@@ -142,6 +150,28 @@ public class UserServiceImpl implements UserService {
         return Collections.emptyList();
     }
 
+    @Override
+    public void requestPasswordChange(String id) {
+        smsService.sendPasswordToken(id);
+        smsTokenService.saveTokenToDatabase(id);
+    }
+
+    @Override
+    public void confirmPasswordChange(String userId, ChangePasswordRequestDTO changePasswordRequestDTO) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("The user with the id: " + userId + " could not be found."));
+        if (user.getTokenExpiryTime() == null) {
+            throw new TokenExpiredException("The token has expired. Please request a new one.");
+        }
+        if (changePasswordRequestDTO.getSmsToken().equals(user.getSmsToken())) {
+            String encryptedPassword = bCryptPasswordEncoder.encode(changePasswordRequestDTO.getNewPassword());
+            user.setPassword(encryptedPassword);
+            userRepository.save(user);
+
+        } else {
+            throw new InvalidTokenException("The token is incorrect. Please try again!");
+        }
+    }
+
     private void updateUserDetails(User updatedUser, UserDTO userDTO) {
         updatedUser.setInterests(userDTO.getInterests());
         updatedUser.setDob(userDTO.getDob());
@@ -150,6 +180,7 @@ public class UserServiceImpl implements UserService {
         updatedUser.setSecondName(stringUtilsService.capitalizeAndRemoveWhiteSpaces(userDTO.getSecondName()));
         updatedUser.setEmail(userDTO.getEmail());
         updatedUser.setCity(stringUtilsService.capitalizeAndRemoveWhiteSpaces(userDTO.getCity()));
+        updatedUser.setPhoneNumber(userDTO.getPhoneNumber());
     }
 
     private boolean checkUserPassword(UserLoginRequestDTO userLoginRequestDTO, User userLogin) {

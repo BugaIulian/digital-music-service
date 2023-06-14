@@ -4,7 +4,6 @@ import com.dms.demo.util.enums.Gender;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.InitBinder;
-
 import java.beans.PropertyEditorSupport;
 
 @ControllerAdvice

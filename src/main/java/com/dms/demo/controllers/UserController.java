@@ -1,5 +1,6 @@
 package com.dms.demo.controllers;
 
+import com.dms.demo.models.dto.ChangePasswordRequestDTO;
 import com.dms.demo.models.dto.UserDTO;
 import com.dms.demo.models.dto.auth.user.UserLoginRequestDTO;
 import com.dms.demo.models.dto.auth.user.UserRegisterRequestDTO;
@@ -10,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Validated
@@ -50,5 +50,17 @@ public class UserController {
                                                   @RequestParam(value = "gender", required = false) Gender gender,
                                                   @RequestParam(value = "city", required = false) String city) {
         return ResponseEntity.ok(userService.getUsers(firstName, city, gender));
+    }
+
+    @PostMapping("/request-password-change/{id}")
+    public ResponseEntity<String> requestPasswordChange(@PathVariable String id) {
+        userService.requestPasswordChange(id);
+        return ResponseEntity.ok("Password change requested. A token has been sent to your phone, the token will be available 1 minute.");
+    }
+
+    @PostMapping("/confirm-password-change/{id}")
+    public ResponseEntity<String> changePassword(@PathVariable String id, @RequestBody ChangePasswordRequestDTO changePasswordRequestDTO) {
+        userService.confirmPasswordChange(id, changePasswordRequestDTO);
+        return ResponseEntity.ok("Password changed successfully!");
     }
 }

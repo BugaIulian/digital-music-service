@@ -34,4 +34,7 @@ public class UserDTO implements Serializable {
     @NotNull
     private Gender gender;
 
+    @Pattern(regexp = "^\\+(?:[0-9] ?){6,14}[0-9]$", message = "Invalid phone number")
+    private String phoneNumber;
+
 }
