@@ -4,6 +4,8 @@ import com.dms.demo.exceptions.artist.ArtistAlreadyExistsException;
 import com.dms.demo.exceptions.artist.ArtistNotFoundException;
 import com.dms.demo.exceptions.gender.IllegalGenderException;
 import com.dms.demo.exceptions.musicgenre.IllegalMusicGenreException;
+import com.dms.demo.exceptions.song.SongNotFoundException;
+import com.dms.demo.exceptions.storage.GoogleCloudConnectionException;
 import com.dms.demo.exceptions.token.InvalidTokenException;
 import com.dms.demo.exceptions.token.TokenExpiredException;
 import com.dms.demo.exceptions.user.UserAlreadyExistsException;
@@ -17,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,6 +76,16 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<Object> invalidTokenException(InvalidTokenException invalidTokenException) {
         return getExceptionResponse(invalidTokenException, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(SongNotFoundException.class)
+    public ResponseEntity<Object> songNotFoundException(SongNotFoundException songNotFoundException) {
+        return getExceptionResponse(songNotFoundException, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(GoogleCloudConnectionException.class)
+    public ResponseEntity<Object> googleCloudConnectionException(GoogleCloudConnectionException googleCloudConnectionException) {
+        return getExceptionResponse(googleCloudConnectionException, HttpStatus.NOT_FOUND);
     }
 
     private ResponseEntity<Object> getExceptionResponse(RuntimeException runtimeException, HttpStatus httpStatus) {
