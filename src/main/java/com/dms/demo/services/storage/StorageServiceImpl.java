@@ -4,7 +4,10 @@ import com.dms.demo.exceptions.artist.ArtistNotFoundException;
 import com.dms.demo.exceptions.song.SongNotFoundException;
 import com.dms.demo.models.entities.Artist;
 import com.dms.demo.repositories.ArtistRepository;
+import com.dms.demo.repositories.SongRepository;
+import com.dms.demo.services.song.SongService;
 import com.dms.demo.util.constants.Constants;
+import com.dms.demo.util.enums.MusicGenre;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,12 +23,14 @@ import java.io.IOException;
 public class StorageServiceImpl implements StorageService {
 
     private final ArtistRepository artistRepository;
+    private final SongService songService;
 
     @Value("${google.cloud.storage.key.path}")
     private String googleCloudStorageKeyPath;
 
-    public StorageServiceImpl(ArtistRepository artistRepository) {
+    public StorageServiceImpl(ArtistRepository artistRepository, SongRepository songRepository, SongService songService) {
         this.artistRepository = artistRepository;
+        this.songService = songService;
     }
 
     public Storage getStorage() throws IOException {
@@ -36,11 +41,12 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public String uploadSongToGoogleCloud(MultipartFile multipartFile, String artistId, String songTitle) throws IOException {
+    public String uploadSongToGoogleCloud(MultipartFile multipartFile, String artistId, String songTitle, MusicGenre musicGenre) throws IOException {
         Storage storage = getStorage();
         Artist artist = artistRepository.findById(artistId).orElseThrow(() -> new ArtistNotFoundException("Artist not found to upload the song."));
         String artistFullName = artist.getFirstName() + " " + artist.getSecondName();
         Blob blob = storage.create(BlobInfo.newBuilder(Constants.GOOGLE_STORAGE_BUCKET, artistFullName + " - " + songTitle).build(), multipartFile.getInputStream());
+        songService.createSong(songTitle, musicGenre, artist);
         return blob.getMediaLink();
     }
 

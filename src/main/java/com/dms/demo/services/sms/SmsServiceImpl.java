@@ -40,6 +40,6 @@ public class SmsServiceImpl implements SmsService {
         Message smsMessage = Message.creator(
                 new PhoneNumber(user.getPhoneNumber()),
                 new PhoneNumber(fromPhoneNumber),
-                "Hi " + user.getFirstName() + " SoundSync here, you've requested a password change. You can use this token: " + smsTokenService.generateAndReturnToken() + " to change your password. The token will be available 1 minute.").create();
+                "Hi " + user.getFirstName() + ", SoundSync here, you've requested a password change. You can use this token: " + smsTokenService.generateAndReturnToken() + " to change your password. The token will be available 1 minute.").create();
     }
 }

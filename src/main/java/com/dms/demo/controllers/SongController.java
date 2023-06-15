@@ -1,6 +1,7 @@
 package com.dms.demo.controllers;
 
 import com.dms.demo.services.storage.StorageService;
+import com.dms.demo.util.enums.MusicGenre;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,8 @@ public class SongController {
     }
 
     @PostMapping("/upload/{artistId}")
-    public String uploadSong(@PathVariable String artistId, @RequestParam MultipartFile file, @RequestParam String songName) throws IOException {
-        return storageService.uploadSongToGoogleCloud(file, artistId, songName);
+    public String uploadSong(@PathVariable String artistId, @RequestParam MultipartFile file, @RequestParam String songName, @RequestParam MusicGenre musicGenre) throws IOException {
+        return storageService.uploadSongToGoogleCloud(file, artistId, songName, musicGenre);
     }
 
     @GetMapping("/play/{songId}")
