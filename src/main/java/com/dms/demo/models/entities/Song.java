@@ -1,9 +1,12 @@
 package com.dms.demo.models.entities;
 
+import com.dms.demo.models.datamapping.genre.GenreConverter;
 import com.dms.demo.util.enums.MusicGenre;
+import de.huxhorn.sulky.ulid.ULID;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.Duration;
 import java.util.List;
 
 @Data
@@ -19,10 +22,11 @@ public class Song {
     private String songTitle;
 
     @Column(name = "song_genre")
+    @Convert(converter = GenreConverter.class)
     private MusicGenre musicGenre;
 
     @Column
-    private int duration;
+    private Duration duration;
 
     @ManyToMany(mappedBy = "songs")
     private List<PlayList> playlists;
@@ -30,4 +34,8 @@ public class Song {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "artist_id")
     private Artist artist;
+
+    public Song() {
+        this.id = new ULID().nextULID();
+    }
 }
