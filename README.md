@@ -14,7 +14,7 @@ Features
 * User Activity Tracking: The application tracks user activity and provides insights into listening habits and trends. //TBD
 
 Technologies Used
-* Spring Framework: Provides a robust and scalable backend structure for the application.
+* Spring Framework:Provides a robust and scalable backend structure for the application.
 * Hibernate: Offers Object-Relational Mapping (ORM) capabilities for seamless interaction with the database.
 * Spotify API: Accesses a vast music catalog, gathering metadata and information about songs and albums.
 * SendGrid: Sends transactional emails for user notifications and account management.
