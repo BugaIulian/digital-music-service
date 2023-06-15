@@ -1,6 +1,7 @@
 package com.dms.demo.models.dto;
 
 import com.dms.demo.util.enums.MusicGenre;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -22,11 +23,14 @@ public class ArtistDTO implements Serializable {
     private LocalDate dob;
 
     @NotBlank
-    private String homeTown;
+    private String city;
 
-    @NotBlank
-    private long followers;
+    @Email
+    private String email;
 
     @NotNull
     private MusicGenre musicGenre;
+
+    @NotBlank
+    private String stageName;
 }

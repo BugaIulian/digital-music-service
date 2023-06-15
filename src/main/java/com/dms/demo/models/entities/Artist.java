@@ -1,5 +1,7 @@
 package com.dms.demo.models.entities;
 
+import com.dms.demo.models.datamapping.genre.GenreConverter;
+import com.dms.demo.util.enums.MusicGenre;
 import de.huxhorn.sulky.ulid.ULID;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -32,11 +34,15 @@ public class Artist {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "dob")
+    private LocalDate dob;
+
     @Column(name = "stage_name")
     private String stageName;
 
     @Column(name = "music_genre")
-    private String musicGenre;
+    @Convert(converter = GenreConverter.class)
+    private MusicGenre musicGenre;
 
     @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Song> songs;
