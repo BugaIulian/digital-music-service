@@ -1,12 +1,16 @@
 package com.dms.demo.controllers;
 
+import com.dms.demo.models.dto.ArtistDTO;
 import com.dms.demo.models.dto.auth.artist.ArtistLoginRequestDTO;
 import com.dms.demo.models.dto.auth.artist.ArtistRegisterRequestDTO;
 import com.dms.demo.services.artist.ArtistService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+@Validated
 
 @RestController
 @RequestMapping("/artists")
@@ -31,5 +35,11 @@ public class ArtistController {
     @PostMapping("/album-cover/{prompt}")
     public ResponseEntity<String> createAlbumCover(@PathVariable String prompt) {
         return ResponseEntity.ok(artistService.createAlbumCover(prompt));
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ArtistDTO> updateArtistProfile(@PathVariable String id, @RequestBody @Valid
+    ArtistDTO artistDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(artistService.updateArtistProfile(id, artistDTO));
     }
 }

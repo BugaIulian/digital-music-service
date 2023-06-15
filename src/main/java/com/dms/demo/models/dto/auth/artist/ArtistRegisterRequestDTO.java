@@ -6,8 +6,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class ArtistRegisterRequestDTO {
+public class ArtistRegisterRequestDTO implements Serializable {
 
     @Email
     private String email;
@@ -17,6 +19,9 @@ public class ArtistRegisterRequestDTO {
 
     @NotBlank
     private String firstName;
+
+    @NotBlank
+    private String secondName;
 
     @NotBlank
     private String stageName;

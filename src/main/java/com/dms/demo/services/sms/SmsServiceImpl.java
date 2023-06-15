@@ -34,7 +34,7 @@ public class SmsServiceImpl implements SmsService {
     @Override
     public void sendPasswordToken(String userId) {
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User with id: " + userId + "could not be found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException("User with id: " + userId + " could not be found"));
 
         Twilio.init(accountSid, authToken);
         Message smsMessage = Message.creator(

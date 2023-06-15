@@ -15,6 +15,7 @@ import com.dms.demo.util.enums.RoleType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
+    @Transactional
     public ArtistRegisterRequestDTO artistRegisterRequest(ArtistRegisterRequestDTO artistRegisterRequestDTO) {
         artistServiceValidations.validateArtistNotAlreadyRegistered(artistRegisterRequestDTO);
         Artist artistToBeRegistered = objectMapper.convertValue(artistRegisterRequestDTO, Artist.class);
@@ -48,16 +50,6 @@ public class ArtistServiceImpl implements ArtistService {
         return objectMapper.convertValue(artistToBeRegistered, ArtistRegisterRequestDTO.class);
     }
 
-    private void setArtistDetails(ArtistRegisterRequestDTO artistRegisterRequestDTO, Artist artistToBeRegistered) {
-        artistToBeRegistered.setCity(stringUtilsService.capitalizeAndRemoveWhiteSpaces(artistRegisterRequestDTO.getCity()));
-        artistToBeRegistered.setEmail(artistRegisterRequestDTO.getEmail());
-        artistToBeRegistered.setPassword(bCryptPasswordEncoder.encode(artistRegisterRequestDTO.getPassword()));
-        artistToBeRegistered.setFirstName(stringUtilsService.capitalizeAndRemoveWhiteSpaces(artistRegisterRequestDTO.getFirstName()));
-        artistToBeRegistered.setStageName(artistRegisterRequestDTO.getStageName());
-        Role role = roleService.createRole(RoleType.ROLE_FREE_ARTIST);
-        artistToBeRegistered.getArtistRoles().add(role);
-        artistToBeRegistered.setAccountCreationDate(LocalDate.now());
-    }
 
     @Override
     public ArtistLoginRequestDTO artistLoginRequest(ArtistLoginRequestDTO artistLoginRequestDTO) {
@@ -71,11 +63,17 @@ public class ArtistServiceImpl implements ArtistService {
     }
 
     @Override
+    @Transactional
     public ArtistDTO updateArtistProfile(String id, ArtistDTO artistDTO) {
-        return null;
+        Artist artistToBeUpdated = artistRepository.findById(id).orElseThrow(() -> new ArtistNotFoundException("Artist to be updated could not be found."));
+        updateArtistDetails(artistDTO, artistToBeUpdated);
+        artistRepository.save(artistToBeUpdated);
+        return objectMapper.convertValue(artistToBeUpdated, ArtistDTO.class);
     }
 
+
     @Override
+    @Transactional
     public void deleteArtistById(String id) {
 
     }
@@ -96,5 +94,27 @@ public class ArtistServiceImpl implements ArtistService {
 
     private boolean checkArtistPassword(ArtistLoginRequestDTO artistLoginRequestDTO, Artist artistLogin) {
         return new BCryptPasswordEncoder().matches(artistLoginRequestDTO.getPassword(), artistLogin.getPassword());
+    }
+
+    private void updateArtistDetails(ArtistDTO artistDTO, Artist artistToBeUpdated) {
+        artistToBeUpdated.setFirstName(artistDTO.getFirstName());
+        artistToBeUpdated.setSecondName(artistDTO.getSecondName());
+        artistToBeUpdated.setEmail(artistDTO.getEmail());
+        artistToBeUpdated.setCity(artistDTO.getCity());
+        artistToBeUpdated.setMusicGenre(artistDTO.getMusicGenre());
+        artistToBeUpdated.setStageName(artistDTO.getStageName());
+        artistToBeUpdated.setDob(artistDTO.getDob());
+    }
+
+    private void setArtistDetails(ArtistRegisterRequestDTO artistRegisterRequestDTO, Artist artistToBeRegistered) {
+        artistToBeRegistered.setCity(stringUtilsService.capitalizeAndRemoveWhiteSpaces(artistRegisterRequestDTO.getCity()));
+        artistToBeRegistered.setEmail(artistRegisterRequestDTO.getEmail());
+        artistToBeRegistered.setPassword(bCryptPasswordEncoder.encode(artistRegisterRequestDTO.getPassword()));
+        artistToBeRegistered.setFirstName(stringUtilsService.capitalizeAndRemoveWhiteSpaces(artistRegisterRequestDTO.getFirstName()));
+        artistToBeRegistered.setSecondName(stringUtilsService.capitalizeAndRemoveWhiteSpaces(artistRegisterRequestDTO.getSecondName()));
+        artistToBeRegistered.setStageName(artistRegisterRequestDTO.getStageName());
+        Role role = roleService.createRole(RoleType.ROLE_FREE_ARTIST);
+        artistToBeRegistered.getArtistRoles().add(role);
+        artistToBeRegistered.setAccountCreationDate(LocalDate.now());
     }
 }
