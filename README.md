@@ -10,6 +10,7 @@ Features
 * Subscription Management: Users can subscribe to different tiers of service, unlocking additional features and benefits.
 * Email Notifications: SendGrid integration enables email notifications for account creation, subscription updates, and more.
 * SMS Alerts: Twilio integration enables SMS alerts for subscription purchases, upcoming events, and special offers.
+* Google Cloud Storage for songs upload by artists.
 * Social Sharing: Users can share their favorite songs, playlists, and artists on social media platforms. //TBD
 * User Activity Tracking: The application tracks user activity and provides insights into listening habits and trends. //TBD
 
@@ -27,4 +28,3 @@ Getting Started
 2. Configure the application properties for database connection, external service credentials, and API keys.
 3. Build and run the application using your preferred IDE.
 4. Contributions are welcome.
-
