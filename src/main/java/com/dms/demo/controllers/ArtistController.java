@@ -37,6 +37,7 @@ public class ArtistController {
         return ResponseEntity.ok(artistService.createAlbumCover(prompt));
     }
 
+
     @PutMapping("/update/{id}")
     public ResponseEntity<ArtistDTO> updateArtistProfile(@PathVariable String id, @RequestBody @Valid
     ArtistDTO artistDTO) {
